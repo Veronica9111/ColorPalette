@@ -8,6 +8,9 @@ public class ColorComponentScaler extends RGBImageFilter {
 
 	  private Color color, newColor;
 	  
+	  private Color violetColor = new Color(169,136,214);
+	  private Color greyColor = new Color(138, 145, 160);
+	  
 	  //private int a[ ][ ] = new int[image.getWidth(null)][image.getHeight(null)];
 	//  public int[][] colors;
 
@@ -44,24 +47,11 @@ public class ColorComponentScaler extends RGBImageFilter {
 		  return false;
 	  }
 	  
-	/*  public boolean isBlack(int x, int y){
-		  int count = 0;
-		  if(x >= 10 && y >= 10 && x < this.colors.length && y < this.colors.length){
-			  for(int i = x - 10; i < x + 10; i++ ){
-				  for(int j = y - 10; j < y + 10; j++){
-					  if(this.colors[i][j] == 0){
-						  count += 1;
-					  }
-				  }
-			  }
-		  }
-		  if(count >= 25){
-			  return true;
-		  }
-		  else{
-			  return false;
-		  }
-	  }*/
+	  public double calculateDistance(Color color1, Color color2){
+		  double distance =Math.pow((color1.getBlue() - color2.getBlue()),2) +Math.pow((color1.getRed() - color2.getRed()),2 )+ Math.pow((color1.getGreen() - color2.getGreen()),2);
+		  distance = Math.sqrt(distance);
+		  return distance;
+	  }
 	  
 	  /**
 	   * split the argb value into its color components, multiply each color
@@ -78,7 +68,7 @@ public class ColorComponentScaler extends RGBImageFilter {
 		  }
 		  */
 		  // for violet color
-		   if(c.getBlue() > 150 && c.getRed()> 120 && (c.getBlue() + c.getRed() + c.getGreen()) < 580 && c.getBlue() > c.getRed() && c.getBlue() > c.getGreen()){
+		/*   if(c.getBlue() > 150 && c.getRed()> 120 && (c.getBlue() + c.getRed() + c.getGreen()) < 580 && c.getBlue() > c.getRed() && c.getBlue() > c.getGreen()){
 
 				  return 0xff000000;
 
@@ -89,6 +79,10 @@ public class ColorComponentScaler extends RGBImageFilter {
 		  else if (c.getRed() > 150){
 
 			  return 0xffffffff;
+		  }*/
+		  
+		  if(calculateDistance(c, violetColor) < 50 || calculateDistance(c, greyColor) < 30){
+			  return 0xff000000;
 		  }
 
 	    return 0xffffffff;

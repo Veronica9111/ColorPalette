@@ -20,6 +20,7 @@ public class ImageFormatter {
 	public static void main(String[] args) {    
         Image image = null;
         BufferedImage bfImage = null;
+        System.out.println(Math.sqrt(9));
         try {
             image = ImageIO.read(new File("/Users/veronica/Desktop/material/png/invoice9.png") );
             //bfImage = ImageIO.read(new File("/Users/veronica/Desktop/invoice4.png") );
@@ -79,7 +80,7 @@ public class ImageFormatter {
 	
     private static void save(BufferedImage image, String ext) {
         String fileName = "generated9";
-        File file = new File("/Users/veronica/Desktop/white/" + fileName + "." + ext);
+        File file = new File("/Users/veronica/Desktop/" + fileName + "." + ext);
         try {
             ImageIO.write(image, ext, file);  // ignore returned boolean
         } catch(IOException e) {
