@@ -16,16 +16,24 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
+
 public class ImageFormatter {
 	
+	private String path;
 	
-	public static void main(String[] args) {    
+	public ImageFormatter(String path){
+		this.path = path;
+	}
+	
+	public String format(String output, String type, String fileName){
         Image image = null;
         BufferedImage bfImage = null;
+        String html = "";
         System.out.println(Math.sqrt(9));
         try {
             //image = ImageIO.read(new File("/Users/veronica/Desktop/material/png/invoice9.png") );
-        	 image = ImageIO.read(new File("/Users/veronica/Desktop/test.tif") );
+        	 image = ImageIO.read(new File(path) );
 
 
 
@@ -36,37 +44,49 @@ public class ImageFormatter {
             Image filteredImage = Toolkit.getDefaultToolkit().createImage(filteredImageSource); 
 
            BufferedImage filtered = toBufferedImage(filteredImage);
-         int[][] colors = new int[image.getWidth(null)][image.getHeight(null)];
-
-           for(int i = 0; i < colors.length; i++){
-
-           	for(int j = 0; j < colors[i].length; j++){
-
-           			if(filtered.getRGB(i, j) == 0xff000000){
-           				colors[i][j] = 0;
-           			}else{
-           				colors[i][j] = 1;
-           			}
-                  
-           	}
-           }
+           int[][] colors = generateColorMatrix(filtered, image.getWidth(null), image.getHeight(null));
 
            ImageFilter blackFilter = new BlackColorFilter(colors);
            FilteredImageSource filteredNewImageSource = new FilteredImageSource(filteredImage.getSource(), blackFilter);
            Image filteredNewImage = Toolkit.getDefaultToolkit().createImage(filteredNewImageSource);
            BufferedImage newFiltered = toBufferedImage(filteredNewImage);
            newFiltered = rotate90DX(newFiltered);
-
-
-            save(newFiltered, "tif");    
+           String path = save(newFiltered, type, fileName);    
+           //Do OCR
+           TesseractWrapper tesseractWrapper = new TesseractWrapper(path);
+           html = tesseractWrapper.doOCR();
+           FileUtils.writeStringToFile(new File(output), html);
+           
         } catch( IOException e){
             //do something
             System.out.print(e.getMessage());
         }
-    }
+
+		return html;
+	}
+	
+
+	public int[][] generateColorMatrix(BufferedImage bfImage, int width, int height){
+		int[][] colors = new int[width][height];
+
+        for(int i = 0; i < colors.length; i++){
+
+        	for(int j = 0; j < colors[i].length; j++){
+
+        			if(bfImage.getRGB(i, j) == 0xff000000){
+        				colors[i][j] = 0;
+        			}else{
+        				colors[i][j] = 1;
+        			}
+               
+        	}
+        }
+        
+        return colors;
+	}
 
 	
-	public static BufferedImage rotate90DX(BufferedImage bi) {
+	public  BufferedImage rotate90DX(BufferedImage bi) {
 	    int width = bi.getWidth();
 	    int height = bi.getHeight();
 	    BufferedImage biFlip = new BufferedImage(height, width, bi.getType());
@@ -76,7 +96,7 @@ public class ImageFormatter {
 	    return biFlip;
 	}
 	
-	public static BufferedImage toBufferedImage(Image img)
+	public  BufferedImage toBufferedImage(Image img)
 	{
 	    if (img instanceof BufferedImage)
 	    {
@@ -95,8 +115,8 @@ public class ImageFormatter {
 	    return bimage;
 	}
 	
-    private static void save(BufferedImage image, String ext) {
-        String fileName = "test2";
+    private  String save(BufferedImage image, String ext, String fileName) {
+
         File file = new File("/Users/veronica/Desktop/" + fileName + "." + ext);
         try {
             ImageIO.write(image, ext, file);  // ignore returned boolean
@@ -104,6 +124,7 @@ public class ImageFormatter {
             System.out.println("Write error for " + file.getPath() +
                                ": " + e.getMessage());
         }
+        return "/Users/veronica/Desktop/" + fileName + "." + ext;
     }       
 
 	
