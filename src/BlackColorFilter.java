@@ -2,40 +2,26 @@ import java.awt.Color;
 import java.awt.image.RGBImageFilter;
 
 public class BlackColorFilter extends RGBImageFilter {
-	  private double redMultiplier, greenMultiplier, blueMultiplier;
-
-	  private int newRed, newGreen, newBlue;
-
-	  private Color color, newColor;
-	  
-	  //private int a[ ][ ] = new int[image.getWidth(null)][image.getHeight(null)];
 	  public int[][] colors;
 
 	  /**
-	   * rm = red multiplier gm = green multiplier bm = blue multiplier
+	   * Filter out the meaningless black area
 	   */
 	  public BlackColorFilter(int[][] colors) {
 	    canFilterIndexColorModel = true;
 	    this.colors = colors;
 	  }
-
-	  private int multColor(int colorComponent, double multiplier) {
-	    colorComponent = (int) (colorComponent * multiplier);
-	    if (colorComponent < 0)
-	      colorComponent = 0;
-	    else if (colorComponent > 255)
-	      colorComponent = 255;
-
-	    return colorComponent;
-	  }
-
-
 	  
+	  /**
+	   * 
+	   * Filter out the small black dots and border
+	   */
 	  public boolean isBlack(int x, int y){
 		  int count = 0;
-		  if(x >= 10 && y >= 10 && x < this.colors.length -10 && y < this.colors.length - 10){
+		  if(x >= 10 && y >= 10 && x < this.colors.length -11 && y < this.colors.length - 11){
 			  for(int i = x - 10; i < x + 10; i++ ){
 				  for(int j = y - 10; j < y + 10; j++){
+					 // System.out.print(String.valueOf(j) + ": " + String.valueOf(y));
 					  if(this.colors[i][j] == 0){
 						  count += 1;
 					  }

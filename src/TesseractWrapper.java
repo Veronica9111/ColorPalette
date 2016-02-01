@@ -14,10 +14,11 @@ public class TesseractWrapper {
 	public String doOCR(){
 		File imageFile = new File(this.path);
         Tesseract instance = Tesseract.getInstance(); // JNA Interface Mapping
-        String value = System.getenv("TESSDATA_PREFIX");
         instance.setDatapath("/usr/local/share");
         instance.setHocr(true);
-        instance.setLanguage("vie+eng");
+        instance.setLanguage("noel");
+        
+        
         String result = "";
         try {
             result = instance.doOCR(imageFile);

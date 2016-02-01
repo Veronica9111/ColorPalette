@@ -5,7 +5,6 @@ public class Position {
 	private Integer right;
 	private Integer bottom;
 	private Integer left;
-	private Position position;
 	
 	public Position(Integer top, Integer right, Integer bottom, Integer left){
 		this.top = top;
