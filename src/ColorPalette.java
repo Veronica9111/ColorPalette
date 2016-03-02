@@ -3,9 +3,9 @@ import java.util.List;
 public class ColorPalette {
 
 	public static void main(String[] args) {    
-		String input = "/Users/veronica/Desktop/target5/noel.icr.exp2.tif";
+		String input = "/Users/veronica/Desktop/i2.tif";
 		String output = "/Users/veronica/Desktop/generated.html";
-		String fileName = "18";
+		String fileName = "ii2";
 		String type = "tif";
 		ImageFormatter imageFormatter = new ImageFormatter(input);
 		String html = imageFormatter.format(output, type, fileName);

@@ -32,6 +32,8 @@ public class ImageFormatter {
 		String filteredPath = "";
 		try {
 			image = ImageIO.read(new File(this.path) );
+
+			
 			BufferedImage bwImage = filterColor(image);
 			//BufferedImage finalImage = filterBlack(image, bwImage);
 			//finalImage = rotate90DX(finalImage);
@@ -54,8 +56,9 @@ public class ImageFormatter {
 	 */
 	public BufferedImage filterColor(Image image){
 		//filter the image to get the certain color
-
-		ImageFilter colorfilter = new ColorComponentScaler();             
+		BufferedImage bfImage = (BufferedImage) image;
+		int[][]colors = generateColorMatrix2(bfImage, image.getWidth(null), image.getHeight(null));
+		ImageFilter colorfilter = new ColorComponentScaler(colors);             
 		FilteredImageSource filteredImageSource = new FilteredImageSource(image.getSource(), colorfilter );
 		Image filteredImage = Toolkit.getDefaultToolkit().createImage(filteredImageSource); 
 		BufferedImage filtered = toBufferedImage(filteredImage);
@@ -107,6 +110,21 @@ public class ImageFormatter {
 				}else{
 					colors[i][j] = 1;
 				}
+
+			}
+		}
+
+		return colors;
+	}
+	
+	public int[][] generateColorMatrix2(BufferedImage bfImage, int width, int height){
+		int[][] colors = new int[width][height];
+
+		for(int i = 0; i < colors.length; i++){
+
+			for(int j = 0; j < colors[i].length; j++){
+
+				colors[i][j] = bfImage.getRGB(i, j);
 
 			}
 		}
