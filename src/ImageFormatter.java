@@ -79,7 +79,7 @@ public class ImageFormatter {
     
 	}
 
-	public String doOCR(String imagePath, String outputPath){
+	public String doOCR(String imagePath, String outputPath) throws IOException{
 		String html = "";
 		TesseractWrapper tesseractWrapper = new TesseractWrapper(imagePath);
 		html = tesseractWrapper.doOCR();
@@ -91,9 +91,10 @@ public class ImageFormatter {
 		return html;
 	}
 
-	public String format(String outputPath,String type, String fileName){
+	public String format(String outputPath,String type, String fileName) throws IOException{
 		String filteredPath = filterImage(type, fileName);
-		String html = doOCR(filteredPath, outputPath);
+		//String html = doOCR(filteredPath, outputPath);
+		String html = "";
 		return html;
 	}
 

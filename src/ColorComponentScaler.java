@@ -12,7 +12,8 @@ public class ColorComponentScaler extends RGBImageFilter {
 	  
 	  private int[][] colors;
 	  
-
+	  private Color blueColor = new Color(155, 155,195);
+	  private Color orangeColor = new Color(181, 137, 104);
 
 	  public ColorComponentScaler(int[][]colors) {
 	    canFilterIndexColorModel = true;
@@ -40,7 +41,7 @@ public class ColorComponentScaler extends RGBImageFilter {
 		  distance = Math.sqrt(distance);
 		  if(flag){
 			 // System.out.println("color distance");
-		  System.out.println(distance);
+		  //System.out.println(distance);
 		  }
 		  return distance;
 	  }
@@ -73,8 +74,15 @@ public class ColorComponentScaler extends RGBImageFilter {
 	  public int filterRGB(int x, int y, int argb) {
 		  Color c = new Color(argb);	
 		  
+		  if(calculateDistance(c, orangeColor, false) < 50){
+			 // if(c.getBlue() - c.getRed() > 10  && c.getBlue() -  c.getGreen() > 10){
+			  if(c.getRed() < 200){
+			      return 0xff000000;
+			  }
+			  //}
+		  }
 		  
-		// if(calculateDistance(c, violetColor) < 50 ||
+/*
 				 if(calculateDistance(c, violetColor, true) < 50 || calculateDistance(c, greyColor, false) < 30 || (calculateDistance(c, blackColor, false) < 140  && isAverage(c.getRed(), c.getGreen(), c.getBlue()) )){
 					 
 					if  (calculateDistance(c,violetColor, true) < 50 ){
@@ -89,9 +97,8 @@ public class ColorComponentScaler extends RGBImageFilter {
 					 if(!isSurrounded(x,y)){
 						 return 0xff000000;
 					 }
-	  //if(calculateDistance(c, blackColor) < 95){
-			  //return 0xff000000;
-		  }
+
+		  }*/
 	    return 0xffffffff;
 	  }
 

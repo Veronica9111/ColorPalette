@@ -1,21 +1,41 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class ColorPalette {
 
-	public static void main(String[] args) {    
-		String input = "/Users/veronica/Desktop/i2.tif";
+	public static void main(String[] args) throws IOException {    
+		//Integer count = 1;
+		
+		Files.walk(Paths.get("/Users/veronica/Downloads/dinge2")).forEach(filePath -> {
+			
+		
+		    if (filePath.toString().contains("tif")) {
+		String input = filePath.toString();
+		System.out.println(input);
 		String output = "/Users/veronica/Desktop/generated.html";
-		String fileName = "ii2";
+	
+		String fileName = "b" + filePath.getFileName();
 		String type = "tif";
 		ImageFormatter imageFormatter = new ImageFormatter(input);
-		String html = imageFormatter.format(output, type, fileName);
-		Analyzer analyzer = new Analyzer(html);
+
+		try {
+			String html = imageFormatter.format(output, type, fileName);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		    }
+		/*Analyzer analyzer = new Analyzer(html);
 		System.out.println("hello");
 		List<Character> characters = analyzer.getCharactersFromHTML();
 		for(Character character : characters){
 			System.out.println(character.getText());
 			System.out.println(character.getPosition());
-		}
+		}*/
+		    });
     }
 	
 }
